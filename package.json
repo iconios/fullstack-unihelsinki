@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "git": "^0.1.5"
+  },
+  "name": "fullstackopen",
+  "version": "1.0.0",
+  "main": "index.html",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iconios/fullstack-unihelsinki.git"
+  },
+  "author": "Ademuyiwa Ikotun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iconios/fullstack-unihelsinki/issues"
+  },
+  "homepage": "https://github.com/iconios/fullstack-unihelsinki#readme",
+  "description": ""
+}
