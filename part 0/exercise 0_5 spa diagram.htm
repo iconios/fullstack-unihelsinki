@@ -3,35 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercise 0.4: New Note Diagram</title>
+    <title>Exercise 0.5: Single Page App Diagram</title>
 </head>
 <body>
     <div class="mermaid">
-        sequenceDiagram
-            browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+        sequenceDiagram	
+            browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
             activate server
-            server-->>browser: HTTP status code 302 (URL redirect)
+            server-->>browser: HTML document spa.html
             deactivate server
-
-            Note right of browser: The URL redirect asks the browser to perform a new HTTP GET request to /exampleapp/notes and the browser reloads the Notes page.
 
             browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
             activate server
             server-->>browser: Stylesheet main.css
             deactivate server
 
-            browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+            browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
             activate server
-            server-->>browser: Javascript main.js
+            server-->>browser: Javascript spa.js
             deactivate server
 
             browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
             activate server
             server-->>browser: Raw data notes (data.json)
             deactivate server
+
+            browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+            activate server
+            server-->>browser: Raw data notes (new_note_spa)
+            deactivate server
     </div>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    </script>    
+    </script>
 </body>
 </html>
