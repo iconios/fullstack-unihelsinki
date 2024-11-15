@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="mermaid">
+        sequenceDiagram
+            participant browser
+            participant server
+
+            browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+            activate server
+            server-->>browser: HTTP status code 302 (URL redirect)
+            deactivate server
+
+            Note right of browser: The URL redirect asks the browser to perform a new HTTP GET request to /exampleapp/notes and the browser reloads the Notes page.
+
+            browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+            activate server
+            server-->>browser: Stylesheet main.css
+            deactivate server
+
+            browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+            activate server
+            server-->>browser: Javascript main.js
+            deactivate server
+
+            browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+            activate server
+            server-->>browser: Raw data notes (data.json)
+            deactivate server
+    </div>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+      </script>    
+</body>
+</html>
