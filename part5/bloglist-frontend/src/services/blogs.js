@@ -9,13 +9,13 @@ const getAll = () => {
 }
 
 const setToken = newToken => {
-    token = `Bearer ${newToken}`
+  token = `Bearer ${newToken}`
 }
 
 const create = (newBlog) => {
   const config = {
-    headers: { Authorization: token},
-}
+    headers: { Authorization: token },
+  }
 
   const request =  axios.post(baseUrl, newBlog, config)
   return request.then(response => response.data)
@@ -30,7 +30,7 @@ const update = (id, updateBlog) => {
 
 const remove = (id) => {
   const config = {
-    headers: { Authorization: token},
+    headers: { Authorization: token },
   }
 
   const deleteUrl = baseUrl.concat(`/${id}`)

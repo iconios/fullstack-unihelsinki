@@ -1,8 +1,14 @@
-import { useState } from "react"
+import { useState } from 'react'
 import blogService from '../services/blogs'
-import showNotification from "../services/notification"
+import showNotification from '../services/notification'
+import propTypes from 'prop-types'
 
-function Blog ({blog, loggedInUser}) {
+Blog.propTypes = {
+  blog: propTypes.object.isRequired,
+  loggedInUser: propTypes.string.isRequired,
+}
+
+function Blog ({ blog, loggedInUser }) {
   const [isView, setIsView] = useState(false)
   const [showBrief, setShowBrief] = useState(false)
   const [upBlog, setUpBlog] = useState(blog)
@@ -30,7 +36,7 @@ function Blog ({blog, loggedInUser}) {
     //increase the likes + 1
     const updatedBlog = {
       ...upBlog,
-      "likes": upBlog.likes + 1
+      'likes': upBlog.likes + 1
     }
     console.log('Updated Blog ID Before', updatedBlog.id)
     // delete the ID from the updated blog
@@ -46,23 +52,26 @@ function Blog ({blog, loggedInUser}) {
       setUpBlog(result)
       console.log('Updated blog', upBlog)
     })
-    .catch(error => {
-      console.log('Error from server', error)
-    })
+      .catch(error => {
+        console.log('Error from server', error)
+      })
   }
 
   // Handle blog deletion
   function handleDelete() {
-   if(window.confirm('Are you sure you want to delete?')) {
-    blogService.remove(blog.id).then(result => {
-      console.log('Response from server', result)
-      showNotification("Deletion successful", "valid")
-    })
-    .catch(error => {
-      console.log('Error from server', error)
-      showNotification(error, "error")
-    })
-   }
+    if(window.confirm('Are you sure you want to delete?')) {
+      blogService.remove(blog.id).then(result => {
+        console.log('Response from server', result)
+        showNotification('Deletion successful', 'valid')
+        setTimeout(() => {
+          location.reload()
+        }, 5000)
+      })
+        .catch(error => {
+          console.log('Error from server', error)
+          showNotification(error, 'error')
+        })
+    }
   }
 
   // Handler to show remove button

@@ -1,13 +1,12 @@
 import axios from 'axios'
 import showNotification from './notification'
 
-
-const logIn = async (credentials) => {
-  const baseUrl = '/api/login'
+const logOut = async () => {
+  const baseUrl = '/api/logout'
   try {
-    const response = await axios.post(baseUrl, credentials)
+    const response = await axios.get(baseUrl)
     console.log('Data received from backend', response.data)
-    showNotification('Login successful', 'valid')
+    showNotification('Logout successful', 'valid')
     return response.data
   }
   catch (error) {
@@ -16,4 +15,4 @@ const logIn = async (credentials) => {
   }
 }
 
-export default { logIn }
+export default { logOut }

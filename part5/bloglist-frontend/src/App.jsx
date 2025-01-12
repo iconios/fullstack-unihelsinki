@@ -13,6 +13,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [createBlog, setCreateBlog] = useState(false)
 
+  // Fetch the blogs from the backend server
   useEffect(() => {
     async function getAll(){
       try {
@@ -26,6 +27,7 @@ const App = () => {
     getAll()
   }, [blogService])
 
+  // Fetch saved token from browser storage
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInAuth')
     if(loggedUserJSON) {
@@ -35,24 +37,26 @@ const App = () => {
       console.log('Logged User JSON', user.token)
     }
   }, [])
-  
+
   function handleCreate(newBlog) {
     blogService.create(newBlog).then(result => {
       const updatedBlog = [
         ...blogs,
-        {"title": result.title,
-          "author": result.author,
-          "url": result.url,
-          "likes": result.likes,
-          "user": result.user,
-          "id": result.id
+        { 'title': result.title,
+          'author': result.author,
+          'url': result.url,
+          'likes': result.likes,
+          'user': result.user,
+          'id': result.id
         }
       ]
       console.log('Result from create blog', result)
       setBlogs(updatedBlog)
-      showNotification(`A new blog ${result.title} by ${result.author} added`, "valid")
+      showNotification(`A new blog ${result.title} by ${result.author} added`, 'valid')
       setCreateBlog(false)
-      location.reload()
+      setTimeout(() => {
+        location.reload()
+      }, 5000)
     })
   }
 
@@ -61,15 +65,15 @@ const App = () => {
     if (username && password) {
       console.log('Received username and password', username, password)
       try {
-        const response = await loginService.logIn({username, password})
-        console.log('Received from server', response)  
+        const response = await loginService.logIn({ username, password })
+        console.log('Received from server', response)
         if(response) {
-          setUser(response)      
-          blogService.setToken(response.token)     
+          setUser(response)
+          blogService.setToken(response.token)
           console.log('Received token from server', response.token)
           window.localStorage.setItem('loggedInAuth', JSON.stringify(response))
-          console.log('Token in browser', window.localStorage.getItem('loggedInAuth')) 
-        } 
+          console.log('Token in browser', window.localStorage.getItem('loggedInAuth'))
+        }
         else {
           setUsername('')
           setPassword('')
@@ -96,19 +100,17 @@ const App = () => {
   }
 
   function newBlogButton(onClick) {
-    return <button type="button" onClick={onClick}>Creeate new blog</button>
+    return <button type="button" onClick={onClick}>Create new blog</button>
   }
 
   function newBlogForm(onClick) {
     return (
       <div>
         <CreateBlog handleCreate={onClick} />
-        <button type="button" onClick={()=> setCreateBlog(false) }>Cancel</button>
+        <button type="button" onClick={() => setCreateBlog(false) }>Cancel</button>
       </div>
     )
   }
-
-  
 
   function blogForm() {
     return (
@@ -117,9 +119,11 @@ const App = () => {
         <p>{user.name} logged-in <span><button type="submit" onClick={handleLogoutSubmit}>Logout</button></span></p>
         { createBlog ? newBlogForm(handleCreate) : newBlogButton(handleNewBlogClick) }
         {console.log('Received blogs', blogs)}
-        { blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-          <Blog key={uuidv4()} blog={blog} loggedInUser={user.username} />
-        )}
+        <ul data-testid="blogList" style={{ listStyle: 'none', padding: 0, marginRight: 8 }}>
+          { blogs.toSorted((a, b) => b.likes - a.likes).map(blog =>
+            <li key={uuidv4()} ><Blog blog={blog} loggedInUser={user.username} /></li>
+          )}
+        </ul>
       </div>
     )
   }
@@ -129,9 +133,9 @@ const App = () => {
       <form onSubmit={handleLoginSubmit}>
         <div>
           <h1>Log into Application</h1>
-          <label>Username: <input type="text"  autoComplete='username' value={username} onChange={(e) => setUsername(e.target.value)}></input></label>
+          <label>Username: <input type="text"  autoComplete='username' data-testid='username' value={username} onChange={(e) => setUsername(e.target.value)}></input></label>
           <br />
-          <label>Password: <input type="password" autoComplete='current-password' value={password} onChange={(e) => setPassword(e.target.value)}></input></label>
+          <label>Password: <input type="password" autoComplete='current-password' data-testid='password' value={password} onChange={(e) => setPassword(e.target.value)}></input></label>
         </div>
         <br />
         <button type="submit">Login</button>
